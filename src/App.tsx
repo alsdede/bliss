@@ -1,10 +1,14 @@
-const foo = 'bla'
+import { ThemeProvider } from 'styled-components'
+import GlobalStyles from 'styles/global'
+import Home from 'pages/Home'
+import theme from 'styles/theme'
 
 function App() {
   return (
-    <div className="App">
-      <h1>APP</h1>
-    </div>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <Home />
+    </ThemeProvider>
   )
 }
 
