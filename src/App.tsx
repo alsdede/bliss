@@ -1,13 +1,13 @@
 import { ThemeProvider } from 'styled-components'
 import GlobalStyles from 'styles/global'
-import Home from 'pages/Home'
+import Navigation from 'routes'
 import theme from 'styles/theme'
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <Home />
+      <Navigation />
     </ThemeProvider>
   )
 }
