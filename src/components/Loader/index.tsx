@@ -6,7 +6,7 @@ const Loader = () => (
     display="block"
   >
     <title>Loading...</title>
-    <g fill="#06092b">
+    <g fill="#FFF">
       <circle cx="60" cy="50" r="4">
         <animate
           attributeName="cx"
@@ -62,7 +62,7 @@ const Loader = () => (
         />
       </circle>
     </g>
-    <g transform="translate(-15)" fill="#2d5ba9">
+    <g transform="translate(-15)" fill="#FFFF">
       <path d="M50 50V20a30 30 0 000 60z" />
       <path d="M50 50H20a30 30 0 0060 0z">
         <animateTransform
