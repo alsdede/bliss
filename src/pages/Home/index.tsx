@@ -7,6 +7,7 @@ import { useHealth } from 'hooks/useHealth'
 
 import * as S from './styles'
 import api from 'services/api'
+import RetryHealthCard from 'components/RetryHealthCard'
 
 type FieldErrors = {
   [key: string]: string
@@ -21,7 +22,7 @@ const Home = () => {
   const handleInput = (field: string, value: string) => {
     setValues((s) => ({ ...s, [field]: value }))
   }
-  const { statusHealth, loading, checkHealthStatus } = useHealth()
+  const { getHealthStatus, isLoading, isHealthStatus } = useHealth()
 
   const handleSearch = useCallback(
     async (event: React.FormEvent) => {
@@ -39,15 +40,22 @@ const Home = () => {
     [values.search]
   )
   useEffect(() => {
-    checkHealthStatus()
-  }, [checkHealthStatus])
+    getHealthStatus()
+  }, [getHealthStatus])
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <Container>
+      <S.ContainerLoader>
         <S.Loading>
           <Loader />
         </S.Loading>
+      </S.ContainerLoader>
+    )
+  }
+  if (isHealthStatus) {
+    return (
+      <Container>
+        <RetryHealthCard />
       </Container>
     )
   }
