@@ -1,9 +1,10 @@
-import { useState, InputHTMLAttributes } from 'react'
+import React, { useState, InputHTMLAttributes } from 'react'
 
 import * as S from './styles'
 
 export type TextFieldProps = {
   onInputChange?: (value: string) => void
+  onClearInput?: () => void
   label?: string
   initialValue?: string
   icon?: React.ReactNode
@@ -20,7 +21,9 @@ const TextField = ({
   initialValue = '',
   error,
   disabled = false,
+
   onInputChange,
+  onClearInput,
   ...props
 }: TextFieldProps) => {
   const [value, setValue] = useState(initialValue)
@@ -31,12 +34,25 @@ const TextField = ({
 
     !!onInputChange && onInputChange(newValue)
   }
+  const onClear = () => {
+    setValue('')
+
+    !!onClearInput && onClearInput()
+  }
 
   return (
     <S.Wrapper disabled={disabled} error={!!error}>
       {!!label && <S.Label htmlFor={name}>{label}</S.Label>}
       <S.InputWrapper>
-        {!!icon && <S.Icon iconPosition={iconPosition}>{icon}</S.Icon>}
+        {!!icon && (
+          <S.Icon
+            iconPosition={iconPosition}
+            hasClear={!value}
+            onClick={onClear}
+          >
+            {icon}
+          </S.Icon>
+        )}
         <S.Input
           type="text"
           onChange={onChange}
