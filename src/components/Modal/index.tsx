@@ -1,57 +1,79 @@
-import styled, { css } from 'styled-components'
+import TextField from 'components/TextField'
+import { useCallback, useState } from 'react'
+import { Close as CloseIcon } from '@styled-icons/evil/Close'
+import { validateEmail } from 'utils/validate'
+import * as S from './styles'
+import api from 'services/api'
 
+type FieldErrors = {
+  [key: string]: string
+}
+type ValidationMessage = {
+  [key: string]: string
+}
 type ModalProps = {
   isOpen: boolean
+  onClose: () => void
 }
 
-const modalModifiers = {
-  open: () => css`
-    opacity: 1;
-  `,
+const Modal = ({ isOpen, onClose }: ModalProps) => {
+  const [email, setEmail] = useState('')
+  const [fieldError, setFieldError] = useState<FieldErrors>({})
+  const [fieldMessage, setFieldMessage] = useState<ValidationMessage>({})
+  const handleShareUrl = useCallback(async () => {
+    const url = window.location.href
+    console.log('[URL]', url)
+    validateEmail(email)
+    if (!validateEmail(email)) {
+      setFieldError({ email: 'invalid e-mail' })
+      return
+    }
+    try {
+      const response = await api.post(
+        `https://private-anon-f0c2a5dbd1-blissrecruitmentapi.apiary-mock.com/share?destination_email=${email}&content_url=${url}`
+      )
+      console.log(response.data)
+      if (response.data.status == 'OK') {
+        setEmail('')
+        setFieldError({})
+        setFieldMessage({ email: 'Email sent!!' })
+      }
+    } catch (err) {
+      console.log(err)
+      setFieldError({ email: 'something is wrong...plese contact support' })
+    }
+  }, [email])
 
-  close: () => css`
-    opacity: 0;
-    pointer-events: none;
-  `
+  const handleOnClose = () => {
+    onClose()
+    setEmail('')
+    setFieldMessage({ email: '' })
+    setFieldError({})
+  }
+  return (
+    <S.Modal isOpen={isOpen} aria-label="modal" aria-hidden={!isOpen}>
+      <S.Close onClick={handleOnClose}>
+        <CloseIcon size={40} />
+      </S.Close>
+      <S.Content>
+        <S.ModalRow>
+          <S.ModalTitle>Share the results</S.ModalTitle>
+        </S.ModalRow>
+        <S.ModalColumn>
+          <TextField
+            value={email}
+            name="email"
+            placeholder="Enter a e-mail"
+            type="email"
+            error={fieldError?.email}
+            onInputChange={(e) => setEmail(e)}
+          />
+          {fieldMessage.email !== '' && fieldMessage.email}
+          <S.CustomButton onClick={handleShareUrl}>Send E-mail</S.CustomButton>
+        </S.ModalColumn>
+      </S.Content>
+    </S.Modal>
+  )
 }
-export const Modal = styled.div<ModalProps>`
-  ${({ theme, isOpen }) => css`
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: ${theme.layers.modal};
-    transition: opacity ${theme.transition.default};
-    ${isOpen && modalModifiers.open()}
-    ${!isOpen && modalModifiers.close()}
-  `}
-`
 
-export const Close = styled.div`
-  ${({ theme }) => css`
-    color: ${theme.colors.white};
-    position: absolute;
-    left: 0;
-    top: 0;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-    text-align: right;
-  `}
-`
-
-export const Content = styled.div`
-  ${({ theme }) => css`
-    padding: ${theme.spacings.small};
-    max-width: min(120rem, 100%);
-    max-height: 80rem;
-    background-color: white;
-    border-radius: ${theme.border.radius};
-    z-index: ${theme.layers.modal};
-  `}
-`
+export default Modal
