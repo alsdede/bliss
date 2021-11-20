@@ -6,6 +6,8 @@ const Navigation = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/questions" element={<Home />} />
+        <Route path="/questions/:id" element={<Home />} />
         <Route path="*" element={<NoMatch />} />
       </Routes>
     </Router>

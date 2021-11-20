@@ -2,7 +2,9 @@ import styled, { css, DefaultTheme } from 'styled-components'
 
 import { TextFieldProps } from '.'
 
-type IconPositionProps = Pick<TextFieldProps, 'iconPosition'>
+type IconPositionProps = Pick<TextFieldProps, 'iconPosition'> & {
+  hasClear?: boolean
+}
 
 type WrapperProps = Pick<TextFieldProps, 'disabled'> & { error?: boolean }
 
@@ -52,11 +54,13 @@ export const Label = styled.label`
   `}
 `
 
-export const Icon = styled.div<IconPositionProps>`
-  ${({ theme, iconPosition }) => css`
+export const Icon = styled.button<IconPositionProps>`
+  ${({ theme, iconPosition, hasClear }) => css`
     display: flex;
+    visibility: ${hasClear ? 'hidden' : 'visible'};
     color: ${theme.colors.gray};
     order: ${iconPosition === 'right' ? 1 : 0};
+    border: 0;
     & > svg {
       width: 2.2rem;
       height: 100%;
@@ -98,5 +102,6 @@ export const Wrapper = styled.div<WrapperProps>`
   ${({ theme, error, disabled }) => css`
     ${error && wrapperModifiers.error(theme)}
     ${disabled && wrapperModifiers.disabled(theme)}
+    width:100%;
   `}
 `
