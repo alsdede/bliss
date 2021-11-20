@@ -1,4 +1,6 @@
 import styled, { css } from 'styled-components'
+import media from 'styled-media-query'
+import { darken } from 'polished'
 
 export const Wrapper = styled.div`
   ${({ theme }) => css`
@@ -9,10 +11,16 @@ export const Wrapper = styled.div`
     height: 100%;
     background-color: ${theme.colors.white};
     border-radius: ${theme.border.radius};
+    transition: top ${theme.transition.default};
+
+    &:hover {
+      background-color: ${darken(0.1, theme.colors.white)};
+      top: -5px;
+    }
   `}
 `
 
-export const ImageBox = styled.a`
+export const ImageBox = styled.div`
   max-height: 12rem;
 
   position: relative;

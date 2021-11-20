@@ -20,10 +20,10 @@ import { useHealth } from 'hooks/useHealth'
 import RetryHealthCard from 'components/RetryHealthCard'
 import { Grid } from 'components/Grid'
 import Card from 'components/Card'
-import { Modal, Content, Close } from 'components/Modal'
+import Modal from 'components/Modal'
+
 //styles
 import * as S from './styles'
-import { validateEmail } from 'utils/validate'
 
 type FieldErrors = {
   [key: string]: string
@@ -38,11 +38,11 @@ type QuestionListProps = {
 const Home = () => {
   const [questionsList, setQuestionList] = useState<QuestionListProps[]>([])
   const [inputSearch, setInputSearch] = useState('')
-  const [email, setEmail] = useState('')
 
   const [fieldError, setFieldError] = useState<FieldErrors>({})
   const [offset, setOffset] = useState(0)
   const [isOpen, setIsOpen] = useState(false)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const location = useLocation()
@@ -81,7 +81,7 @@ const Home = () => {
 
   const handleShowMore = useCallback(async () => {
     const newOffset = offset + 10
-
+    setIsLoadingMore(true)
     setOffset(newOffset)
     console.log(newOffset)
     const response = await api.get(
@@ -89,7 +89,7 @@ const Home = () => {
     )
 
     setQuestionList([...questionsList, ...response.data])
-
+    setIsLoadingMore(false)
     console.log('newdata', response.data)
   }, [offset, inputSearch, questionsList])
 
@@ -101,28 +101,6 @@ const Home = () => {
       getQuestionsList()
     }
   }, [getQuestionsList, location.pathname, navigate])
-
-  const handleShareUrl = useCallback(async () => {
-    const url = window.location.href
-    console.log('[URL]', url)
-    validateEmail(email)
-    if (!validateEmail(email)) {
-      setFieldError({ email: 'invalid e-mail' })
-    }
-    try {
-      const response = await api.post(
-        `https://private-anon-f0c2a5dbd1-blissrecruitmentapi.apiary-mock.com/share?destination_email=${email}&content_url=${url}`
-      )
-      console.log(response.data)
-      if (response.data.status == 'OK') {
-        setIsOpen(false)
-        setEmail('')
-      }
-    } catch (err) {
-      console.log(err)
-      setFieldError({ email: 'something is wrong...plese contact support' })
-    }
-  }, [email])
 
   useEffect(() => {
     getHealthStatus()
@@ -147,7 +125,7 @@ const Home = () => {
       </Container>
     )
   }
-  const abc = false
+
   return (
     <section>
       <Container>
@@ -176,7 +154,7 @@ const Home = () => {
               size="medium"
               icon={<Share />}
               onClick={() => {
-                setIsOpen(true), setEmail('')
+                setIsOpen(true)
               }}
             >
               Share
@@ -194,47 +172,22 @@ const Home = () => {
             </Link>
           ))}
         </Grid>
-        {true && (
-          <S.ShowMore>
-            {abc ? (
-              <S.ShowMoreLoading
-                src="/dots.svg"
-                alt="Loading more questions..."
-              />
-            ) : (
-              <S.ShowMoreButton onClick={handleShowMore}>
-                <p>Show More</p>
-                <ArrowDown size={35} />
-              </S.ShowMoreButton>
-            )}
-          </S.ShowMore>
-        )}
-        {
-          <Modal isOpen={isOpen} aria-label="modal" aria-hidden={!isOpen}>
-            <Close onClick={() => setIsOpen(false)}>
-              <CloseIcon size={40} />
-            </Close>
 
-            <Content>
-              <S.ModalRow>
-                <S.ModalTitle>Share the results</S.ModalTitle>
-              </S.ModalRow>
-              <S.ModalColumn>
-                <TextField
-                  value={email}
-                  name="email"
-                  placeholder="Enter a e-mail"
-                  type="email"
-                  error={fieldError?.email}
-                  onInputChange={(e) => setEmail(e)}
-                />
-                <S.CustomButton onClick={handleShareUrl}>
-                  Send E-mail
-                </S.CustomButton>
-              </S.ModalColumn>
-            </Content>
-          </Modal>
-        }
+        <S.ShowMore>
+          {isLoadingMore ? (
+            <S.ShowMoreLoading
+              src="/dots.svg"
+              alt="Loading more questions..."
+            />
+          ) : (
+            <S.ShowMoreButton onClick={handleShowMore}>
+              <p>Show More</p>
+              <ArrowDown size={35} />
+            </S.ShowMoreButton>
+          )}
+        </S.ShowMore>
+
+        {<Modal isOpen={isOpen} onClose={() => setIsOpen(false)} />}
       </Container>
     </section>
   )
