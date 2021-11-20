@@ -14,7 +14,6 @@ import { Share } from '@styled-icons/fluentui-system-regular/Share'
 //components
 import Button from 'components/Button'
 import { Container } from 'components/Container'
-import Loader from 'components/Loader'
 import TextField from 'components/TextField'
 import { useHealth } from 'hooks/useHealth'
 import RetryHealthCard from 'components/RetryHealthCard'
@@ -24,6 +23,7 @@ import Modal from 'components/Modal'
 
 //styles
 import * as S from './styles'
+import LoaderContainer from 'components/LoaderContainer'
 
 type FieldErrors = {
   [key: string]: string
@@ -44,40 +44,41 @@ const Home = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [searchParams, setSearchParams] = useSearchParams()
-  const navigate = useNavigate()
+  const searchFilter = searchParams.get('filter')
   const location = useLocation()
-
+  const navigate = useNavigate()
   const { getHealthStatus, isLoading, isHealthStatus } = useHealth()
+  console.log('search', searchFilter)
 
-  const handleSearch = useCallback(
-    async (event: React.FormEvent) => {
+  const handleSearchSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
       try {
-        console.log('clear1')
         event.preventDefault()
+        const formData = new FormData(event.currentTarget)
+        const newSearch = formData.get('search') as string
+        if (!newSearch) return
+        setSearchParams({ filter: newSearch })
         setFieldError({})
-        console.log('aaaa', inputSearch)
+        console.log('searchfilter', searchFilter)
         const response = await api.get(
-          `/questions?limit=10&offset=0&filter=${inputSearch}`
+          `/questions?limit=10&offset=0&filter=${searchFilter}`
         )
+        console.log('[resp]:', response.data)
         setQuestionList(response.data)
-        setSearchParams({ filter: inputSearch })
-        navigate({
-          pathname: 'questions',
-          search: `?filter=${inputSearch}`
-        })
       } catch (err) {
         setFieldError({ search: 'user not found' })
       }
     },
-    [inputSearch, navigate, setSearchParams]
+    [searchFilter, setSearchParams]
   )
   const getQuestionsList = useCallback(async () => {
-    const response = await api.get(
-      `/questions?limit=10&offset=0&filter=${inputSearch}`
-    )
-    setQuestionList(response.data)
-    console.log(response.data)
-  }, [inputSearch])
+    try {
+      const response = await api.get(`/questions?limit=10&offset=0&filter=""`)
+      setQuestionList(response.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }, [])
 
   const handleShowMore = useCallback(async () => {
     const newOffset = offset + 10
@@ -85,22 +86,20 @@ const Home = () => {
     setOffset(newOffset)
     console.log(newOffset)
     const response = await api.get(
-      `/questions?limit=10&offset=${newOffset}&filter=${inputSearch}`
+      `/questions?limit=10&offset=${newOffset}&filter=${searchFilter}`
     )
 
     setQuestionList([...questionsList, ...response.data])
     setIsLoadingMore(false)
     console.log('newdata', response.data)
-  }, [offset, inputSearch, questionsList])
+  }, [offset, searchFilter, questionsList])
 
   const handleCleanSearchParam = useCallback(() => {
     setInputSearch('')
-    if (location.pathname !== '/') {
-      navigate('/')
-      setQuestionList([])
-      getQuestionsList()
-    }
-  }, [getQuestionsList, location.pathname, navigate])
+    navigate('/')
+    setQuestionList([])
+    getQuestionsList()
+  }, [getQuestionsList, navigate])
 
   useEffect(() => {
     getHealthStatus()
@@ -110,13 +109,7 @@ const Home = () => {
   }, [getHealthStatus, isHealthStatus])
 
   if (isLoading) {
-    return (
-      <S.ContainerLoader>
-        <S.Loading>
-          <Loader />
-        </S.Loading>
-      </S.ContainerLoader>
-    )
+    return <LoaderContainer />
   }
   if (!isHealthStatus) {
     return (
@@ -131,12 +124,11 @@ const Home = () => {
       <Container>
         <S.Header>
           <S.Left>
-            <S.Form onSubmit={handleSearch}>
+            <S.Form onSubmit={handleSearchSubmit}>
               <TextField
                 value={inputSearch}
-                name="inputSearch"
+                name="search"
                 placeholder="Search a question"
-                type="inputSearch"
                 error={fieldError?.search}
                 onInputChange={(e) => setInputSearch(e)}
                 onClearInput={handleCleanSearchParam}
@@ -175,10 +167,7 @@ const Home = () => {
 
         <S.ShowMore>
           {isLoadingMore ? (
-            <S.ShowMoreLoading
-              src="/dots.svg"
-              alt="Loading more questions..."
-            />
+            <S.ShowMoreLoading src="/dot.svg" alt="Loading more questions..." />
           ) : (
             <S.ShowMoreButton onClick={handleShowMore}>
               <p>Show More</p>

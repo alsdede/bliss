@@ -1,15 +1,20 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Container } from 'components/Container'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowIosBackOutline } from '@styled-icons/evaicons-outline/ArrowIosBackOutline'
-import * as S from './styles'
-import Button from 'components/Button'
+//service
 import api from 'services/api'
+//hooks
+import { useHealth } from 'hooks/useHealth'
+//components
+import Button from 'components/Button'
+import { Container } from 'components/Container'
 import { Grid } from 'components/Grid'
 import Modal from 'components/Modal'
-import Loader from 'components/Loader'
-import { useHealth } from 'hooks/useHealth'
+import LoaderContainer from 'components/LoaderContainer'
 import RetryHealthCard from 'components/RetryHealthCard'
+//icons
+import { ArrowIosBackOutline } from '@styled-icons/evaicons-outline/ArrowIosBackOutline'
+//styles
+import * as S from './styles'
 
 type ChoicesProps = {
   choice: string
@@ -29,7 +34,6 @@ const Details = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const params = useParams()
   const navigate = useNavigate()
-
   const { getHealthStatus, isLoading, isHealthStatus } = useHealth()
 
   const getQuestion = useCallback(async () => {
@@ -41,6 +45,7 @@ const Details = () => {
   useEffect(() => {
     getHealthStatus()
     getQuestion()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleAddVote = useCallback(
@@ -63,6 +68,9 @@ const Details = () => {
 
   console.log('[LIST]', questionDetails)
 
+  if (isLoading) {
+    return <LoaderContainer />
+  }
   if (!isHealthStatus) {
     return (
       <Container>

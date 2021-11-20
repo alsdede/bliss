@@ -13,7 +13,6 @@ export const HealthContext = createContext<HealthContextData>(
 export const HealthProvider: React.FC = ({ children }) => {
   const [isHealthStatus, setIsHealthStatus] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [error, setError] = useState()
 
   const getHealthStatus = useCallback(async () => {
     try {

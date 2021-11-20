@@ -7,15 +7,9 @@ export type CardProps = {
 }
 const Card = ({
   date,
-
   title,
   img = 'https://source.unsplash.com/random/300x140'
 }: CardProps) => {
-  // const formatDate = new Intl.DateTimeFormat('en-US', {
-  //   day: 'numeric',
-  //   month: 'short',
-  //   year: 'numeric'
-  // }).format(new Date(date))
   return (
     <S.Wrapper>
       <S.ImageBox>

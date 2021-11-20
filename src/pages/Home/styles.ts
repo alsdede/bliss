@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 import { darken } from 'polished'
-
+import media from 'styled-media-query'
 import Button from 'components/Button'
 export const Wrapper = styled.main``
 
@@ -16,8 +16,13 @@ export const Header = styled.div`
   ${({ theme }) => css`
     display: flex;
     align-items: center;
+
     justify-content: space-between;
     margin-top: ${theme.spacings.xlarge};
+    ${media.lessThan('small')`
+    flex-direction:column;
+    align-items:flex-start;
+    `}
   `}
 `
 export const Right = styled.div`
@@ -25,34 +30,6 @@ export const Right = styled.div`
 `
 export const Left = styled.div`
   display: flex;
-`
-export const ContainerLoader = styled.div`
-  ${({ theme }) => css`
-    width: 100%;
-    max-width: ${theme.grid.container};
-    margin-left: auto;
-    margin-right: auto;
-
-    padding-left: calc(${theme.grid.gutter} / 2);
-    padding-right: calc(${theme.grid.gutter} / 2);
-  `}
-`
-export const Loading = styled.div`
-  ${({ theme }) => css`
-    background: ${theme.colors.mainBg};
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 20rem;
-    height: 40rem;
-    min-width: 56rem;
-    svg {
-      height: 10rem;
-      width: 10rem;
-    }
-  `}
 `
 
 export const ShowMore = styled.div`

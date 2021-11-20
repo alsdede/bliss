@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components'
-import { darken } from 'polished'
 import media from 'styled-media-query'
 import { Container } from 'components/Container'
 
@@ -33,9 +32,6 @@ export const Content = styled.div`
     background-color: ${theme.colors.white};
     border-radius: ${theme.border.radius};
     padding: ${theme.spacings.xxsmall};
-    ${media.greaterThan('medium')`
-
-    `}
   `}
 `
 export const ImageWrapper = styled.div`

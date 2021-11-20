@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Navigate
+} from 'react-router-dom'
 import Home from 'pages/Home'
 import Details from 'pages/Details'
 
@@ -6,7 +12,7 @@ const Navigation = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Navigate replace to="/questions" />} />
         <Route path="/questions" element={<Home />} />
         <Route path="/questions/:id" element={<Details />} />
         <Route path="*" element={<NoMatch />} />
