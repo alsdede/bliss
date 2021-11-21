@@ -1,14 +1,17 @@
 import { ThemeProvider } from 'styled-components'
 import GlobalStyles from 'styles/global'
-import Home from 'pages/Home'
+import Navigation from 'routes'
 import theme from 'styles/theme'
+import AppProvider from 'hooks'
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <Home />
-    </ThemeProvider>
+    <AppProvider>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Navigation />
+      </ThemeProvider>
+    </AppProvider>
   )
 }
 
