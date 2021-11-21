@@ -55,10 +55,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
          - feature:_freq-03
 
   ## Tasks
-    ### Features
-    - [Branch] https://github.com/alsdede/bliss/tree/feature_freq-01
-    - [Branch] https://github.com/alsdede/bliss/tree/feature_freq-02
-    - [Branch] https://github.com/alsdede/bliss/tree/feature_freq-03
+
+    - [FREQ-01_BRANCH] (https://github.com/alsdede/bliss/tree/feature_freq-01)
+    - [FREQ-02_BRANCH] (https://github.com/alsdede/bliss/tree/feature_freq-02)
+    - [FREQ-03_BRANCH] (https://github.com/alsdede/bliss/tree/feature_freq-03)
 
 
 
