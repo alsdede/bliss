@@ -58,11 +58,9 @@ export const Content = styled.div`
 `
 
 export const ModalRow = styled.div`
-  ${({ theme }) => css`
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 2rem;
-  `}
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2rem;
 `
 export const ModalColumn = styled.div`
   display: flex;
