@@ -56,9 +56,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
   ## Tasks
     ### Features
-     1. FREQ-01 : Loading Screen [Branch] https://github.com/alsdede/bliss/tree/feature_freq-01
-     2. FREQ-02 : Loading Screen [Branch] https://github.com/alsdede/bliss/tree/feature_freq-02
-     3. FREQ-03 : Loading Screen [Branch] https://github.com/alsdede/bliss/tree/feature_freq-03
+     1. FREQ-01 : [Branch] https://github.com/alsdede/bliss/tree/feature_freq-01
+     2. FREQ-02 :[Branch] https://github.com/alsdede/bliss/tree/feature_freq-02
+     3. FREQ-03 : [Branch] https://github.com/alsdede/bliss/tree/feature_freq-03
 
 
 
