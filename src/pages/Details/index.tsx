@@ -6,11 +6,11 @@ import api from 'services/api'
 import { useHealth } from 'hooks/useHealth'
 //components
 import Button from 'components/Button'
-import { Container } from 'components/Container'
+
 import { Grid } from 'components/Grid'
 import Modal from 'components/Modal'
 import LoaderContainer from 'components/LoaderContainer'
-import RetryHealthCard from 'components/RetryHealthCard'
+
 //icons
 import { ArrowIosBackOutline } from '@styled-icons/evaicons-outline/ArrowIosBackOutline'
 //styles
@@ -34,7 +34,7 @@ const Details = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const params = useParams()
   const navigate = useNavigate()
-  const { getHealthStatus, isLoading, isHealthStatus } = useHealth()
+  const { getHealthStatus, isLoading } = useHealth()
 
   const getQuestion = useCallback(async () => {
     const response = await api.get(`/questions/${params.id}`)
@@ -71,13 +71,7 @@ const Details = () => {
   if (isLoading) {
     return <LoaderContainer />
   }
-  if (!isHealthStatus) {
-    return (
-      <Container>
-        <RetryHealthCard />
-      </Container>
-    )
-  }
+
   return (
     <S.WrapperContainer>
       <S.Header>
