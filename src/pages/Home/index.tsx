@@ -2,6 +2,8 @@ import { useEffect, useCallback, useState } from 'react'
 import { useSearchParams, useNavigate, Link } from 'react-router-dom'
 //service
 import api from 'services/api'
+//hooks
+import { useHealth } from 'hooks/useHealth'
 //icons
 import { Close as CloseIcon } from '@styled-icons/evil/Close'
 import { KeyboardArrowDown as ArrowDown } from '@styled-icons/material-outlined/KeyboardArrowDown'
@@ -10,8 +12,7 @@ import { Share } from '@styled-icons/fluentui-system-regular/Share'
 import Button from 'components/Button'
 import { Container } from 'components/Container'
 import TextField from 'components/TextField'
-import { useHealth } from 'hooks/useHealth'
-import RetryHealthCard from 'components/RetryHealthCard'
+
 import { Grid } from 'components/Grid'
 import Card from 'components/Card'
 import Modal from 'components/Modal'
@@ -97,7 +98,6 @@ const Home = () => {
   }, [getQuestionsList, navigate])
 
   useEffect(() => {
-    getHealthStatus()
     if (isHealthStatus) {
       getQuestionsList()
     }
@@ -106,13 +106,6 @@ const Home = () => {
 
   if (isLoading) {
     return <LoaderContainer />
-  }
-  if (!isHealthStatus) {
-    return (
-      <Container>
-        <RetryHealthCard />
-      </Container>
-    )
   }
 
   return (
