@@ -1,10 +1,5 @@
 import { useEffect, useCallback, useState } from 'react'
-import {
-  useSearchParams,
-  useNavigate,
-  Link,
-  useLocation
-} from 'react-router-dom'
+import { useSearchParams, useNavigate, Link } from 'react-router-dom'
 //service
 import api from 'services/api'
 //icons
@@ -45,7 +40,7 @@ const Home = () => {
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [searchParams, setSearchParams] = useSearchParams()
   const searchFilter = searchParams.get('filter')
-  const location = useLocation()
+
   const navigate = useNavigate()
   const { getHealthStatus, isLoading, isHealthStatus } = useHealth()
   console.log('search', searchFilter)
@@ -106,6 +101,7 @@ const Home = () => {
     if (isHealthStatus) {
       getQuestionsList()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getHealthStatus, isHealthStatus])
 
   if (isLoading) {

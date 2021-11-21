@@ -5,11 +5,9 @@ import Button from 'components/Button'
 export const Wrapper = styled.main``
 
 export const Form = styled.form`
-  ${({ theme }) => css`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  `}
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 export const Header = styled.div`
@@ -70,11 +68,9 @@ export const ShowMoreLoading = styled.img`
 `
 
 export const ModalRow = styled.div`
-  ${({ theme }) => css`
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 2rem;
-  `}
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2rem;
 `
 export const ModalColumn = styled.div`
   display: flex;

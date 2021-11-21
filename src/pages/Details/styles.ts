@@ -99,11 +99,9 @@ export const Date = styled.p`
 `
 
 export const Item = styled.div`
-  ${({ theme }) => css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  `}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 export const ItemLabel = styled.span`
   ${({ theme }) => css`
