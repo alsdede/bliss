@@ -46,8 +46,19 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     5. services
     6. styles
 
+       ### Branchs
+       - main
+       - develop
+       - features
+         - feature:_freq-01
+         - feature:_freq-02
+         - feature:_freq-03
 
-
+  ## Tasks
+    ### Features
+     1. FREQ-01 : Loading Screen [Branch] https://github.com/alsdede/bliss/tree/feature_freq-01
+     2. FREQ-02 : Loading Screen [Branch] https://github.com/alsdede/bliss/tree/feature_freq-02
+     3. FREQ-03 : Loading Screen [Branch] https://github.com/alsdede/bliss/tree/feature_freq-03
 
 
 
